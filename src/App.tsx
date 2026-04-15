@@ -1,5 +1,6 @@
+import { Agentation, type Annotation } from 'agentation'
 import { useEffect, useMemo, useState } from 'react'
-import type { CSSProperties, FormEvent } from 'react'
+import type { CSSProperties } from 'react'
 import './App.css'
 
 const BOARD_COLS = 10
@@ -96,67 +97,26 @@ const AGENTATION_METADATA = {
   workspace_id: import.meta.env.VITE_AGENTATION_WORKSPACE_ID ?? 'ws_01kf0b8vzse7rb8tf8s2r1sgxj',
 }
 
-type AgentationFeedbackProps = {
+const AGENTATION_SITE_ID = 'tetris-web-game'
+
+type AgentationPanelProps = {
   webhookUrl: string
   metadata: Record<string, string>
 }
 
-function AgentationFeedback({ webhookUrl, metadata }: AgentationFeedbackProps) {
-  const [message, setMessage] = useState('')
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-
-  const submitFeedback = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const trimmed = message.trim()
-    if (!trimmed || status === 'sending') {
-      return
-    }
-
-    setStatus('sending')
-    try {
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          content: trimmed,
-          metadata,
-          source: 'tetris-web',
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error(`request failed: ${response.status}`)
-      }
-
-      setMessage('')
-      setStatus('success')
-    } catch {
-      setStatus('error')
-    }
-  }
-
+function AgentationPanel({ webhookUrl, metadata }: AgentationPanelProps) {
   return (
     <div className="glass-card feedback-card">
       <h2>Agentation 反馈</h2>
-      <p className="feedback-copy">在线收集用户反馈并透传任务上下文。</p>
-      <form onSubmit={submitFeedback} className="feedback-form">
-        <textarea
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          placeholder="输入你的建议、问题或复现步骤..."
-          rows={4}
-        />
-        <button type="submit" disabled={!message.trim() || status === 'sending'}>
-          {status === 'sending' ? '发送中...' : '提交反馈'}
-        </button>
-      </form>
-      <p className="feedback-status">
-        {status === 'success' && '已发送到 Agentation。'}
-        {status === 'error' && '发送失败，请稍后重试。'}
+      <p className="feedback-copy">
+        页面右下角已挂载官方 Agentation 工具栏，可直接圈选界面元素、写批注并发送反馈。
       </p>
-      <code className="feedback-meta">{JSON.stringify({ webhookUrl, metadata })}</code>
+      <ul className="feedback-list">
+        <li>点击右下角工具栏后，可对棋盘、按钮和文案做可视化批注。</li>
+        <li>发送时会走 Agentation 的 webhook 流程，并额外补发当前任务上下文。</li>
+        <li>适合 QA / PM 在真实页面上做 UI 验收与改动反馈。</li>
+      </ul>
+      <code className="feedback-meta">{JSON.stringify({ webhookUrl, metadata, site_id: AGENTATION_SITE_ID }, null, 2)}</code>
     </div>
   )
 }
@@ -443,6 +403,29 @@ function App() {
     }
   }, [game.status])
 
+  const handleAgentationSubmit = async (output: string, annotations: Annotation[]) => {
+    try {
+      await fetch(AGENTATION_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          kind: 'agentation',
+          event: 'feedback_submitted',
+          source: 'tetris-web',
+          site_id: AGENTATION_SITE_ID,
+          url: window.location.href,
+          output,
+          annotations,
+          metadata: AGENTATION_METADATA,
+        }),
+      })
+    } catch {
+      // Agentation 自带 webhook 已覆盖主路径；这里的 enrich webhook 失败时不阻断交互。
+    }
+  }
+
   const statusText =
     game.status === 'idle'
       ? '待机中，点击开始进入游戏'
@@ -453,7 +436,8 @@ function App() {
           : '游戏结束'
 
   return (
-    <main className="app-shell">
+    <>
+      <main className="app-shell">
       <section className="brand-panel glass-card">
         <p className="badge">Ralph Arcade Studio</p>
         <h1>俄罗斯方块 Tetris</h1>
@@ -533,13 +517,12 @@ function App() {
             </ul>
           </div>
 
-          <AgentationFeedback
-            webhookUrl={AGENTATION_WEBHOOK_URL}
-            metadata={AGENTATION_METADATA}
-          />
+          <AgentationPanel webhookUrl={AGENTATION_WEBHOOK_URL} metadata={AGENTATION_METADATA} />
         </aside>
       </section>
-    </main>
+      </main>
+      <Agentation webhookUrl={AGENTATION_WEBHOOK_URL} copyToClipboard={false} onSubmit={handleAgentationSubmit} />
+    </>
   )
 }
 

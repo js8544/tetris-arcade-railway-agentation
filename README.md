@@ -1,23 +1,25 @@
 # 俄罗斯方块 Web 游戏（React + TypeScript + Vite）
 
-可上线的单机俄罗斯方块，包含完整 UI/交互、键盘操作、Playwright 验收截图与 Agentation 反馈入口。
+可上线的单机俄罗斯方块，包含完整 UI/交互、键盘操作、Playwright 验收截图，以及通过官方 `agentation` React 组件挂载的可视化反馈入口。
 
 ## 功能概览
 
 - 标准玩法：生成、移动、旋转、软降、硬降、锁定、消行、结束判定
 - 成长系统：`score / level / lines`，等级提升后自动加速
 - 完整界面：品牌区、状态提示、开始/暂停/继续/重开、Next 预览、操作说明
-- 反馈集成：站内 Agentation 反馈表单，直连 Consen webhook
+- 反馈集成：站内官方 Agentation 工具栏 + Consen webhook 回流
 
 ## Agentation 配置
 
-前端已内置并透传固定上下文：
+前端已通过 `import { Agentation } from "agentation"` 挂载官方工具栏，并默认指向以下 webhook / 上下文：
 
 - `webhookUrl`: `https://api.consen.app/webhooks/agentation`
 - `task_id`: `tsk_01kp7nmabtfyb93dshv7zwahmx`
 - `project_id`: `prj_01kp7njnewfm6bbzdaew554ydd`
 - `chat_id`: `chat_01kp7nentvedfr6q52d1p00f1h`
 - `workspace_id`: `ws_01kf0b8vzse7rb8tf8s2r1sgxj`
+
+说明：公开文档里可直接配置的是 `webhookUrl` 与回调；本项目额外在 `onSubmit` 时补发一份带 `task_id/project_id/chat_id/workspace_id/site_id` 的 enrich payload 到 Consen。
 
 可选环境变量（未设置时使用上述默认值）：
 
