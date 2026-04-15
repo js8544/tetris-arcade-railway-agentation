@@ -1,18 +1,17 @@
-已完成当前任务 `task-3-agentation-docs` 的实现并通过验收检查。
+已完成 `task-4-verify` 的可验证交付，当前任务验收已通过。
 
 变更文件：
-- [src/App.tsx](/workspace/tetris-game/src/App.tsx#L89)
-- [src/App.css](/workspace/tetris-game/src/App.css#L159)
-- [README.md](/workspace/tetris-game/README.md#L1)
+- [playwright.config.ts](/workspace/tetris-game/playwright.config.ts)
+- [tests/home.spec.ts](/workspace/tetris-game/tests/home.spec.ts)
 
-关键实现：
-- 在页面内新增 `AgentationFeedback` React 组件并挂载到侧边栏，提交反馈时 `POST` 到 `https://api.consen.app/webhooks/agentation`。
-- 显式透传 metadata：`task_id / project_id / chat_id / workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖默认值。
-- 新增反馈区样式（输入框、状态文案、元数据展示）。
-- 重写 README：补充运行、构建、E2E、Railway 部署、交付验收命令与当前任务验收命令。
+生成产物：
+- [test-results/tetris-home.png](/workspace/tetris-game/test-results/tetris-home.png)
 
-验证结果：
+执行结果：
 - `npm run build` ✅
-- `grep -R 'api.consen.app/webhooks/agentation' -n src .` ✅
-- `grep -RE 'tsk_...|prj_...|chat_...|ws_...' -n src .` ✅
-- `test -f README.md` ✅
+- `test -f playwright.config.ts` ✅
+- `npm run test:e2e` ✅（1 passed）
+- `test -f test-results/tetris-home.png` ✅
+
+补充说明：
+- 首次运行 Playwright 时缺少浏览器，已执行 `npx playwright install chromium` 后复跑通过。

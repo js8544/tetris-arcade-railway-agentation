@@ -1,6 +1,6 @@
 # Ralph Context Packet
 
-Iteration: 3
+Iteration: 4
 
 ## Objective
 交付一个可上线的俄罗斯方块 Web 游戏，包含完整 UI/交互、GitHub 仓库、Railway 部署与 Agentation 反馈集成。
@@ -54,85 +54,79 @@ Iteration: 3
 - test -f .codex/ralph/deploy-url.txt
 
 ## Current Task
-- id: task-3-agentation-docs
-- title: 集成 Agentation，补充 README 与部署说明
+- id: task-4-verify
+- title: 执行构建、本地预览和 Playwright 截图验证
 - status: in_progress
 - goal: 
 
 ## Task Instructions
-在 React 站点内挂载 Agentation，并将 webhookUrl 指向 https://api.consen.app/webhooks/agentation；同时把已知 project_id/task_id/chat_id/workspace_id 作为 metadata 透传。补充 README 的运行、构建、部署与验收说明。
+确保项目可构建，并提供 Playwright 脚本在本地启动站点后抓取首页 UI 截图，截图路径固定为 test-results/tetris-home.png。
 
 ## Current Task Acceptance Checks
-- grep -R 'api.consen.app/webhooks/agentation' -n src . >/dev/null
-- grep -RE 'tsk_01kp7nmabtfyb93dshv7zwahmx|prj_01kp7njnewfm6bbzdaew554ydd|chat_01kp7nentvedfr6q52d1p00f1h|ws_01kf0b8vzse7rb8tf8s2r1sgxj' -n src . >/dev/null
-- test -f README.md
+- npm run build
+- test -f playwright.config.ts
+- test -f test-results/tetris-home.png
 
 ## Outstanding Tasks
-- [in_progress] task-3-agentation-docs 集成 Agentation，补充 README 与部署说明
-- [pending] task-4-verify 执行构建、本地预览和 Playwright 截图验证
+- [in_progress] task-4-verify 执行构建、本地预览和 Playwright 截图验证
 - [pending] task-5-release 创建 GitHub 仓库、推送代码并部署 Railway
 
 ## Recent Progress
-实现内容：
-- 完整俄罗斯方块核心玩法：方块生成、左右移动、旋转、软降、硬降、锁定、消行、结束判定。
-- 计分与成长：`score / lines / level`，随等级提升自动加快下落速度。
-- 完整 UI/交互：
-1. 品牌区与标题文案
-2. 按钮：`开始 / 暂停 / 继续 / 重开`
-3. 状态反馈（等待开始/进行中/已暂停/游戏结束）
-4. 统计卡片（score/level/lines）
-5. `next` 下一个方块预览
-6. 键位操作说明
-7. 响应式布局与视觉样式（玻璃卡片、棋盘格、方块配色）
+- [src/App.tsx](/workspace/tetris-game/src/App.tsx#L89)
+- [src/App.css](/workspace/tetris-game/src/App.css#L159)
+- [README.md](/workspace/tetris-game/README.md#L1)
 
-键盘支持：
+关键实现：
+- 在页面内新增 `AgentationFeedback` React 组件并挂载到侧边栏，提交反馈时 `POST` 到 `https://api.consen.app/webhooks/agentation`。
+- 显式透传 metadata：`task_id / project_id / chat_id / workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖默认值。
+- 新增反馈区样式（输入框、状态文案、元数据展示）。
+- 重写 README：补充运行、构建、E2E、Railway 部署、交付验收命令与当前任务验收命令。
 
-Iteration 2
-Task: task-2-gameplay-ui - 实现俄罗斯方块核心玩法、完整 UI 与交互
+验证结果：
+- `npm run build` ✅
+- `grep -R 'api.consen.app/webhooks/agentation' -n src .` ✅
+- `grep -RE 'tsk_...|prj_...|chat_...|ws_...' -n src .` ✅
+- `test -f README.md` ✅
+
+Iteration 4
+Task: task-3-agentation-docs - 集成 Agentation，补充 README 与部署说明
 Status after iteration: completed
-Verify exit: 0
-Verify log: /workspace/tetris-game/.codex/ralph/verify-2.log
+Verify exit: 1
+Verify log: /workspace/tetris-game/.codex/ralph/verify-4.log
 Codex last message:
-已完成 `task-2-gameplay-ui` 的核心交付，当前任务验收检查已通过。
+已完成当前任务 `task-3-agentation-docs` 的实现并通过验收检查。
 
 变更文件：
-- [src/App.tsx](/workspace/tetris-game/src/App.tsx)
-- [src/App.css](/workspace/tetris-game/src/App.css)
-- [src/index.css](/workspace/tetris-game/src/index.css)
+- [src/App.tsx](/workspace/tetris-game/src/App.tsx#L89)
+- [src/App.css](/workspace/tetris-game/src/App.css#L159)
+- [README.md](/workspace/tetris-game/README.md#L1)
 
-实现内容（`src/App.tsx`）：
-- 完整俄罗斯方块核心玩法：方块生成、移动、旋转（含简单墙踢）、软降、硬降、自动下落、锁定、消行、结束判定。
-- 计分/等级/消行系统：`score`、`level`、`lines`，并随等级提升加快下落速度。
-- 完整键盘交互：`←/→`、`↑/X`、`↓`、`Space`、`P`、`Enter`。
-- 完整 UI 结构：品牌区、状态反馈、`开始/暂停/继续/重开` 按钮、统计卡、`next` 预览、操作说明。
+关键实现：
+- 在页面内新增 `AgentationFeedback` React 组件并挂载到侧边栏，提交反馈时 `POST` 到 `https://api.consen.app/webhooks/agentation`。
+- 显式透传 metadata：`task_id / project_id / chat_id / workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖默认值。
+- 新增反馈区样式（输入框、状态文案、元数据展示）。
+- 重写 README：补充运行、构建、E2E、Railway 部署、交付验收命令与当前任务验收命令。
 
-验收结果：
-- `test -f src/App.tsx` ✅
-- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src >/dev/null` ✅
-- `grep -RE 'score|level|lines|next' -ni src >/dev/null` ✅
-- 额外验证：`npm run build` ✅
-
-说明：
+验证结果：
+- `npm run build` ✅
+- `grep -R 'api.consen.app/webhooks/agentation' -n src .` ✅
+- `grep -RE 'tsk_...|prj_...|chat_...|ws_...' -n src .` ✅
+- `test -f README.md` ✅
 
 ## Working Tree
-M .codex/ralph/context-packet.md
- M .codex/ralph/git-diff-stat.txt
- M .codex/ralph/git-status.txt
+M .codex/ralph/git-status.txt
  M .codex/ralph/prd.json
  M .codex/ralph/progress.txt
- M src/App.tsx
 
 ## Diff Stat
-.codex/ralph/context-packet.md | 88 ++++++++++++++++++++----------------------
- .codex/ralph/git-diff-stat.txt |  6 ---
- .codex/ralph/git-status.txt    |  1 +
+.codex/ralph/git-diff-stat.txt |  7 ------
+ .codex/ralph/git-status.txt    |  3 ---
  .codex/ralph/prd.json          |  2 +-
- .codex/ralph/progress.txt      | 27 +++++++++++++
- src/App.tsx                    | 79 +++++++++++++++++++++++++++++++++++++
- 6 files changed, 149 insertions(+), 54 deletions(-)
+ .codex/ralph/progress.txt      | 50 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 51 insertions(+), 11 deletions(-)
 
 ## Latest Verification Summary
-task=task-2-gameplay-ui verify exit=0; log=verify-2.log
+task=task-3-agentation-docs verify exit=0; log=verify-3.log
 
 ## Instructions For Codex
 - Work only on the current task above.
