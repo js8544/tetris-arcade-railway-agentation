@@ -1,0 +1,68 @@
+{
+  "objective": "\u4ea4\u4ed8\u4e00\u4e2a\u53ef\u4e0a\u7ebf\u7684\u4fc4\u7f57\u65af\u65b9\u5757 Web \u6e38\u620f\uff0c\u5305\u542b\u5b8c\u6574 UI/\u4ea4\u4e92\u3001GitHub \u4ed3\u5e93\u3001Railway \u90e8\u7f72\u4e0e Agentation \u53cd\u9988\u96c6\u6210\u3002",
+  "acceptance_checks": [
+    "test -f package.json",
+    "test -f src/App.tsx",
+    "test -f README.md",
+    "test -f test-results/tetris-home.png",
+    "npm run build",
+    "git remote get-url origin | grep -E 'github.com[:/].+/.+'",
+    "test -f .codex/ralph/deploy-url.txt"
+  ],
+  "tasks": [
+    {
+      "id": "task-1-bootstrap",
+      "title": "\u521d\u59cb\u5316 Vite React TypeScript \u9879\u76ee\u5e76\u914d\u7f6e\u57fa\u7840\u811a\u672c",
+      "status": "in_progress",
+      "instructions": "\u521b\u5efa Vite React TypeScript \u9879\u76ee\uff0c\u8865\u9f50 package.json \u4e2d dev/build/start/test:e2e \u811a\u672c\uff0c\u786e\u4fdd\u53ef\u5728 Railway \u4f5c\u4e3a\u9759\u6001\u524d\u7aef\u8fd0\u884c\u3002",
+      "acceptance_checks": [
+        "test -f package.json",
+        "node -e \"const p=require('./package.json'); const s=p.scripts||{}; if(!s.dev||!s.build||!s.start||!s['test:e2e']) process.exit(1)\"",
+        "test -f src/main.tsx"
+      ]
+    },
+    {
+      "id": "task-2-gameplay-ui",
+      "title": "\u5b9e\u73b0\u4fc4\u7f57\u65af\u65b9\u5757\u6838\u5fc3\u73a9\u6cd5\u3001\u5b8c\u6574 UI \u4e0e\u4ea4\u4e92",
+      "status": "pending",
+      "instructions": "\u5b9e\u73b0\u6807\u51c6\u4fc4\u7f57\u65af\u65b9\u5757\u7684\u68cb\u76d8\u3001\u65b9\u5757\u3001\u79fb\u52a8/\u65cb\u8f6c/\u8f6f\u964d/\u786c\u964d\u3001\u6d88\u884c\u3001\u5f97\u5206\u3001\u7b49\u7ea7\u4e0e\u901f\u5ea6\uff1b\u754c\u9762\u5fc5\u987b\u6709\u5b8c\u6574\u54c1\u724c\u533a\u3001\u6309\u94ae\u3001\u72b6\u6001\u5361\u3001\u9884\u89c8\u4e0e\u64cd\u4f5c\u8bf4\u660e\uff0c\u4e0d\u8981\u505a\u5360\u4f4d\u5f0f\u9875\u9762\u3002",
+      "acceptance_checks": [
+        "test -f src/App.tsx",
+        "grep -RE '\u5f00\u59cb|\u6682\u505c|\u7ee7\u7eed|\u91cd\u5f00' -n src/App.tsx src >/dev/null",
+        "grep -RE 'score|level|lines|next' -ni src >/dev/null"
+      ]
+    },
+    {
+      "id": "task-3-agentation-docs",
+      "title": "\u96c6\u6210 Agentation\uff0c\u8865\u5145 README \u4e0e\u90e8\u7f72\u8bf4\u660e",
+      "status": "pending",
+      "instructions": "\u5728 React \u7ad9\u70b9\u5185\u6302\u8f7d Agentation\uff0c\u5e76\u5c06 webhookUrl \u6307\u5411 https://api.consen.app/webhooks/agentation\uff1b\u540c\u65f6\u628a\u5df2\u77e5 project_id/task_id/chat_id/workspace_id \u4f5c\u4e3a metadata \u900f\u4f20\u3002\u8865\u5145 README \u7684\u8fd0\u884c\u3001\u6784\u5efa\u3001\u90e8\u7f72\u4e0e\u9a8c\u6536\u8bf4\u660e\u3002",
+      "acceptance_checks": [
+        "grep -R 'api.consen.app/webhooks/agentation' -n src . >/dev/null",
+        "grep -RE 'tsk_01kp7nmabtfyb93dshv7zwahmx|prj_01kp7njnewfm6bbzdaew554ydd|chat_01kp7nentvedfr6q52d1p00f1h|ws_01kf0b8vzse7rb8tf8s2r1sgxj' -n src . >/dev/null",
+        "test -f README.md"
+      ]
+    },
+    {
+      "id": "task-4-verify",
+      "title": "\u6267\u884c\u6784\u5efa\u3001\u672c\u5730\u9884\u89c8\u548c Playwright \u622a\u56fe\u9a8c\u8bc1",
+      "status": "pending",
+      "instructions": "\u786e\u4fdd\u9879\u76ee\u53ef\u6784\u5efa\uff0c\u5e76\u63d0\u4f9b Playwright \u811a\u672c\u5728\u672c\u5730\u542f\u52a8\u7ad9\u70b9\u540e\u6293\u53d6\u9996\u9875 UI \u622a\u56fe\uff0c\u622a\u56fe\u8def\u5f84\u56fa\u5b9a\u4e3a test-results/tetris-home.png\u3002",
+      "acceptance_checks": [
+        "npm run build",
+        "test -f playwright.config.ts",
+        "test -f test-results/tetris-home.png"
+      ]
+    },
+    {
+      "id": "task-5-release",
+      "title": "\u521b\u5efa GitHub \u4ed3\u5e93\u3001\u63a8\u9001\u4ee3\u7801\u5e76\u90e8\u7f72 Railway",
+      "status": "pending",
+      "instructions": "\u51c6\u5907\u9002\u5408 Railway \u7684\u90e8\u7f72\u914d\u7f6e\uff0c\u4f46\u4e0d\u8981\u4f2a\u9020\u8fdc\u7a0b\u4e0e\u90e8\u7f72\u7ed3\u679c\uff1b\u5f53 GitHub \u4e0e Railway \u5b8c\u6210\u540e\uff0c\u5e94\u80fd\u901a\u8fc7 origin remote \u548c deploy-url.txt \u9a8c\u8bc1\u3002",
+      "acceptance_checks": [
+        "git remote get-url origin | grep -E 'github.com[:/].+/.+'",
+        "test -f .codex/ralph/deploy-url.txt"
+      ]
+    }
+  ]
+}
