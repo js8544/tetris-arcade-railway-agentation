@@ -2,3 +2,22 @@
 - 任务：俄罗斯方块完整交付（UI/交互 + GitHub + Railway + Agentation）
 - 当前状态：已完成环境预检，当前目录无现成仓库，因此新建 /workspace/tetris-game 并初始化 git。
 - 下一步：通过 Ralph loop 先完成项目脚手架与核心游戏实现。
+Iteration 1
+Task: task-1-bootstrap - 初始化 Vite React TypeScript 项目并配置基础脚本
+Status after iteration: in_progress
+Verify exit: 1
+Verify log: /workspace/tetris-game/.codex/ralph/verify-1.log
+Codex last message:
+本轮无法在当前环境内完成 `task-1-bootstrap`，原因是硬性环境限制阻塞了实现：
+
+- 文件系统只读：创建/编辑文件会报 `Read-only file system`（例如写 `package.json` 失败）。
+- 网络受限：`npm create vite@latest . -- --template react-ts` 无法访问 `registry.npmjs.org`（`EAI_AGAIN`）。
+
+我已执行当前任务验收检查，结果如下：
+
+- `test -f package.json` -> 失败（退出码 `1`）
+- 脚本检查（`dev/build/start/test:e2e`）-> 失败（退出码 `2`，因为 `package.json` 不存在）
+- `test -f src/main.tsx` -> 失败（退出码 `1`）
+
+要继续推进，需要你先提供可写工作区（至少 `/workspace/tetris-game` 可写），并允许安装依赖（可访问 npm registry）或预置一个 Vite React TS 模板文件集。环境放开后我会立即完成本任务并再次跑验收。
+

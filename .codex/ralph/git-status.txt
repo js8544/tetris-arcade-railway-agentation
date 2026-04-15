@@ -1,2 +1,4 @@
-?? .codex/
-?? .gitignore
+ M .codex/ralph/context-packet.md
+ M .codex/ralph/git-diff-stat.txt
+ M .codex/ralph/git-status.txt
+ M .codex/ralph/progress.txt
