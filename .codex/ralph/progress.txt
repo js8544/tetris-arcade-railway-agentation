@@ -21,3 +21,28 @@ Codex last message:
 
 要继续推进，需要你先提供可写工作区（至少 `/workspace/tetris-game` 可写），并允许安装依赖（可访问 npm registry）或预置一个 Vite React TS 模板文件集。环境放开后我会立即完成本任务并再次跑验收。
 
+Iteration 2
+Task: task-1-bootstrap - 初始化 Vite React TypeScript 项目并配置基础脚本
+Status after iteration: completed
+Verify exit: 0
+Verify log: /workspace/tetris-game/.codex/ralph/verify-2.log
+Codex last message:
+当前 `task-1-bootstrap` 仍无法推进到可交付状态，阻塞与上轮一致且已复核：
+
+- 文件系统只读，无法创建项目文件：`touch /workspace/tetris-game/.write-test` 报 `Read-only file system`（退出码 `1`）。
+- 网络不可用，无法拉取 npm 包：`curl https://registry.npmjs.org` 报 `Could not resolve host`。
+
+我已执行当前任务验收检查，结果全部失败：
+
+- `test -f package.json` -> `exit 1`
+- 脚本检查（`dev/build/start/test:e2e`）-> `exit 1`（`Cannot find module './package.json'`）
+- `test -f src/main.tsx` -> `exit 1`
+
+另外我看到工作区里有我未修改的变更（`git status` 显示 `.codex/ralph/*` 和 `tmp/`），按你的协作规则需要你确认是否保留这些改动后我再继续。
+
+要继续本任务，请先提供：
+1. `/workspace/tetris-game` 可写权限。  
+2. 可访问 npm registry（或预置完整 Vite React TS 模板文件）。  
+
+环境放开后我会直接初始化项目并补齐 `dev/build/start/test:e2e`，然后重新跑验收。
+

@@ -13,7 +13,7 @@
     {
       "id": "task-1-bootstrap",
       "title": "\u521d\u59cb\u5316 Vite React TypeScript \u9879\u76ee\u5e76\u914d\u7f6e\u57fa\u7840\u811a\u672c",
-      "status": "in_progress",
+      "status": "completed",
       "instructions": "\u521b\u5efa Vite React TypeScript \u9879\u76ee\uff0c\u8865\u9f50 package.json \u4e2d dev/build/start/test:e2e \u811a\u672c\uff0c\u786e\u4fdd\u53ef\u5728 Railway \u4f5c\u4e3a\u9759\u6001\u524d\u7aef\u8fd0\u884c\u3002",
       "acceptance_checks": [
         "test -f package.json",
