@@ -172,3 +172,27 @@ Codex last message:
 - `grep -RE 'tsk_...|prj_...|chat_...|ws_...' -n src .` ✅
 - `test -f README.md` ✅
 
+Iteration 4
+Task: task-4-verify - 执行构建、本地预览和 Playwright 截图验证
+Status after iteration: completed
+Verify exit: 0
+Verify log: /workspace/tetris-game/.codex/ralph/verify-4.log
+Codex last message:
+已完成 `task-4-verify` 的可验证交付，当前任务验收已通过。
+
+变更文件：
+- [playwright.config.ts](/workspace/tetris-game/playwright.config.ts)
+- [tests/home.spec.ts](/workspace/tetris-game/tests/home.spec.ts)
+
+生成产物：
+- [test-results/tetris-home.png](/workspace/tetris-game/test-results/tetris-home.png)
+
+执行结果：
+- `npm run build` ✅
+- `test -f playwright.config.ts` ✅
+- `npm run test:e2e` ✅（1 passed）
+- `test -f test-results/tetris-home.png` ✅
+
+补充说明：
+- 首次运行 Playwright 时缺少浏览器，已执行 `npx playwright install chromium` 后复跑通过。
+
