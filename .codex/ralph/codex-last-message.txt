@@ -1,21 +1,21 @@
-已完成 `task-2-gameplay-ui` 的核心交付，当前任务验收检查已通过。
+已完成当前任务的高价值交付，包含站点内 Agentation 挂载与 README 部署文档补全。
 
 变更文件：
 - [src/App.tsx](/workspace/tetris-game/src/App.tsx)
-- [src/App.css](/workspace/tetris-game/src/App.css)
-- [src/index.css](/workspace/tetris-game/src/index.css)
+- [README.md](/workspace/tetris-game/README.md)
 
-实现内容（`src/App.tsx`）：
-- 完整俄罗斯方块核心玩法：方块生成、移动、旋转（含简单墙踢）、软降、硬降、自动下落、锁定、消行、结束判定。
-- 计分/等级/消行系统：`score`、`level`、`lines`，并随等级提升加快下落速度。
-- 完整键盘交互：`←/→`、`↑/X`、`↓`、`Space`、`P`、`Enter`。
-- 完整 UI 结构：品牌区、状态反馈、`开始/暂停/继续/重开` 按钮、统计卡、`next` 预览、操作说明。
+具体完成：
+- 在 [src/App.tsx](/workspace/tetris-game/src/App.tsx) 中保留并挂载了 `AgentationFeedback` React 组件，`webhookUrl` 默认指向 `https://api.consen.app/webhooks/agentation`。
+- `metadata` 透传了已知 `project_id/task_id/chat_id/workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖（默认值仍为指定 ID）。
+- 将 README 重写为交付文档，补充了：
+  - 本地运行（`npm install` / `npm run dev`）
+  - 生产构建与启动（`npm run build` / `npm run start`）
+  - Railway 部署命令与变量说明
+  - Agentation 配置说明
+  - 验收命令清单与 Playwright 截图产物说明
 
-验收结果：
-- `test -f src/App.tsx` ✅
-- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src >/dev/null` ✅
-- `grep -RE 'score|level|lines|next' -ni src >/dev/null` ✅
-- 额外验证：`npm run build` ✅
+验收与验证结果：
+- `bash .codex/ralph/verify-current-task.sh` ✅（exit 0）
+- `npm run build` ✅
 
-说明：
-- 工作区中 `.codex/ralph/*` 的变更仍保留（未回滚）。
+可继续下一任务 `task-4-verify`（本地预览 + Playwright 截图验证）。

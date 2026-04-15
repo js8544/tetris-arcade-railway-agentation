@@ -1,6 +1,6 @@
 # Ralph Context Packet
 
-Iteration: 2
+Iteration: 3
 
 ## Objective
 交付一个可上线的俄罗斯方块 Web 游戏，包含完整 UI/交互、GitHub 仓库、Railway 部署与 Agentation 反馈集成。
@@ -54,66 +54,65 @@ Iteration: 2
 - test -f .codex/ralph/deploy-url.txt
 
 ## Current Task
-- id: task-2-gameplay-ui
-- title: 实现俄罗斯方块核心玩法、完整 UI 与交互
+- id: task-3-agentation-docs
+- title: 集成 Agentation，补充 README 与部署说明
 - status: in_progress
 - goal: 
 
 ## Task Instructions
-实现标准俄罗斯方块的棋盘、方块、移动/旋转/软降/硬降、消行、得分、等级与速度；界面必须有完整品牌区、按钮、状态卡、预览与操作说明，不要做占位式页面。
+在 React 站点内挂载 Agentation，并将 webhookUrl 指向 https://api.consen.app/webhooks/agentation；同时把已知 project_id/task_id/chat_id/workspace_id 作为 metadata 透传。补充 README 的运行、构建、部署与验收说明。
 
 ## Current Task Acceptance Checks
-- test -f src/App.tsx
-- grep -RE '开始|暂停|继续|重开' -n src/App.tsx src >/dev/null
-- grep -RE 'score|level|lines|next' -ni src >/dev/null
+- grep -R 'api.consen.app/webhooks/agentation' -n src . >/dev/null
+- grep -RE 'tsk_01kp7nmabtfyb93dshv7zwahmx|prj_01kp7njnewfm6bbzdaew554ydd|chat_01kp7nentvedfr6q52d1p00f1h|ws_01kf0b8vzse7rb8tf8s2r1sgxj' -n src . >/dev/null
+- test -f README.md
 
 ## Outstanding Tasks
-- [in_progress] task-2-gameplay-ui 实现俄罗斯方块核心玩法、完整 UI 与交互
-- [pending] task-3-agentation-docs 集成 Agentation，补充 README 与部署说明
+- [in_progress] task-3-agentation-docs 集成 Agentation，补充 README 与部署说明
 - [pending] task-4-verify 执行构建、本地预览和 Playwright 截图验证
 - [pending] task-5-release 创建 GitHub 仓库、推送代码并部署 Railway
 
 ## Recent Progress
-当前 `task-1-bootstrap` 仍无法推进到可交付状态，阻塞与上轮一致且已复核：
+实现内容：
+- 完整俄罗斯方块核心玩法：方块生成、左右移动、旋转、软降、硬降、锁定、消行、结束判定。
+- 计分与成长：`score / lines / level`，随等级提升自动加快下落速度。
+- 完整 UI/交互：
+1. 品牌区与标题文案
+2. 按钮：`开始 / 暂停 / 继续 / 重开`
+3. 状态反馈（等待开始/进行中/已暂停/游戏结束）
+4. 统计卡片（score/level/lines）
+5. `next` 下一个方块预览
+6. 键位操作说明
+7. 响应式布局与视觉样式（玻璃卡片、棋盘格、方块配色）
 
-- 文件系统只读，无法创建项目文件：`touch /workspace/tetris-game/.write-test` 报 `Read-only file system`（退出码 `1`）。
-- 网络不可用，无法拉取 npm 包：`curl https://registry.npmjs.org` 报 `Could not resolve host`。
+键盘支持：
 
-我已执行当前任务验收检查，结果全部失败：
-
-- `test -f package.json` -> `exit 1`
-- 脚本检查（`dev/build/start/test:e2e`）-> `exit 1`（`Cannot find module './package.json'`）
-- `test -f src/main.tsx` -> `exit 1`
-
-另外我看到工作区里有我未修改的变更（`git status` 显示 `.codex/ralph/*` 和 `tmp/`），按你的协作规则需要你确认是否保留这些改动后我再继续。
-
-要继续本任务，请先提供：
-1. `/workspace/tetris-game` 可写权限。  
-2. 可访问 npm registry（或预置完整 Vite React TS 模板文件）。  
-
-环境放开后我会直接初始化项目并补齐 `dev/build/start/test:e2e`，然后重新跑验收。
-
-Iteration 1
-Task: task-1-bootstrap - 初始化 Vite React TypeScript 项目并配置基础脚本
+Iteration 2
+Task: task-2-gameplay-ui - 实现俄罗斯方块核心玩法、完整 UI 与交互
 Status after iteration: completed
-Verify exit: 1
-Verify log: /workspace/tetris-game/.codex/ralph/verify-1.log
+Verify exit: 0
+Verify log: /workspace/tetris-game/.codex/ralph/verify-2.log
 Codex last message:
-已完成 `task-1-bootstrap` 的最高价值进展并通过当前任务验收检查。
+已完成 `task-2-gameplay-ui` 的核心交付，当前任务验收检查已通过。
 
-变更：
-- 更新 [package.json](/workspace/tetris-game/package.json)
-1. 增加 `start` 脚本：`vite preview --host 0.0.0.0 --port ${PORT:-4173}`（可用于 Railway 静态预览启动）
-2. 增加 `test:e2e` 脚本：`playwright test`
-3. 保留 `dev` / `build`，并将包名改为 `tetris-game`
-4. 增加 `@playwright/test` 开发依赖
-- 生成 [package-lock.json](/workspace/tetris-game/package-lock.json)（执行 `npm install` 后）
+变更文件：
+- [src/App.tsx](/workspace/tetris-game/src/App.tsx)
+- [src/App.css](/workspace/tetris-game/src/App.css)
+- [src/index.css](/workspace/tetris-game/src/index.css)
 
-验证结果：
-- `test -f package.json` ✅
-- `node -e "const p=require('./package.json'); const s=p.scripts||{}; if(!s.dev||!s.build||!s.start||!s['test:e2e']) process.exit(1)"` ✅
-- `test -f src/main.tsx` ✅
-- 额外执行 `npm run build` ✅（构建成功）
+实现内容（`src/App.tsx`）：
+- 完整俄罗斯方块核心玩法：方块生成、移动、旋转（含简单墙踢）、软降、硬降、自动下落、锁定、消行、结束判定。
+- 计分/等级/消行系统：`score`、`level`、`lines`，并随等级提升加快下落速度。
+- 完整键盘交互：`←/→`、`↑/X`、`↓`、`Space`、`P`、`Enter`。
+- 完整 UI 结构：品牌区、状态反馈、`开始/暂停/继续/重开` 按钮、统计卡、`next` 预览、操作说明。
+
+验收结果：
+- `test -f src/App.tsx` ✅
+- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src >/dev/null` ✅
+- `grep -RE 'score|level|lines|next' -ni src >/dev/null` ✅
+- 额外验证：`npm run build` ✅
+
+说明：
 
 ## Working Tree
 M .codex/ralph/context-packet.md
@@ -121,17 +120,19 @@ M .codex/ralph/context-packet.md
  M .codex/ralph/git-status.txt
  M .codex/ralph/prd.json
  M .codex/ralph/progress.txt
+ M src/App.tsx
 
 ## Diff Stat
-.codex/ralph/context-packet.md | 85 +++++++++++++++++++++++++-----------------
- .codex/ralph/git-diff-stat.txt |  4 --
+.codex/ralph/context-packet.md | 88 ++++++++++++++++++++----------------------
+ .codex/ralph/git-diff-stat.txt |  6 ---
  .codex/ralph/git-status.txt    |  1 +
  .codex/ralph/prd.json          |  2 +-
- .codex/ralph/progress.txt      | 22 +++++++++++
- 5 files changed, 74 insertions(+), 40 deletions(-)
+ .codex/ralph/progress.txt      | 27 +++++++++++++
+ src/App.tsx                    | 79 +++++++++++++++++++++++++++++++++++++
+ 6 files changed, 149 insertions(+), 54 deletions(-)
 
 ## Latest Verification Summary
-task=task-1-bootstrap verify exit=1; log=verify-1.log
+task=task-2-gameplay-ui verify exit=0; log=verify-2.log
 
 ## Instructions For Codex
 - Work only on the current task above.

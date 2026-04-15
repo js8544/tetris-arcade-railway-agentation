@@ -35,7 +35,7 @@
     {
       "id": "task-3-agentation-docs",
       "title": "\u96c6\u6210 Agentation\uff0c\u8865\u5145 README \u4e0e\u90e8\u7f72\u8bf4\u660e",
-      "status": "pending",
+      "status": "in_progress",
       "instructions": "\u5728 React \u7ad9\u70b9\u5185\u6302\u8f7d Agentation\uff0c\u5e76\u5c06 webhookUrl \u6307\u5411 https://api.consen.app/webhooks/agentation\uff1b\u540c\u65f6\u628a\u5df2\u77e5 project_id/task_id/chat_id/workspace_id \u4f5c\u4e3a metadata \u900f\u4f20\u3002\u8865\u5145 README \u7684\u8fd0\u884c\u3001\u6784\u5efa\u3001\u90e8\u7f72\u4e0e\u9a8c\u6536\u8bf4\u660e\u3002",
       "acceptance_checks": [
         "grep -R 'api.consen.app/webhooks/agentation' -n src . >/dev/null",

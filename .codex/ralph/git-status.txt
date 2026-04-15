@@ -3,3 +3,4 @@
  M .codex/ralph/git-status.txt
  M .codex/ralph/prd.json
  M .codex/ralph/progress.txt
+ M src/App.tsx

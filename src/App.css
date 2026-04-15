@@ -156,6 +156,47 @@ strong {
   padding: 14px;
 }
 
+.feedback-card {
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.feedback-copy {
+  margin: 0;
+  color: #c7d8ee;
+}
+
+.feedback-form {
+  display: grid;
+  gap: 8px;
+}
+
+.feedback-form textarea {
+  border: 1px solid rgba(158, 189, 224, 0.3);
+  border-radius: 10px;
+  padding: 10px;
+  color: #f2f8ff;
+  resize: vertical;
+  min-height: 88px;
+  font: inherit;
+  background: rgba(7, 15, 29, 0.6);
+}
+
+.feedback-status {
+  margin: 0;
+  min-height: 22px;
+  font-size: 14px;
+  color: #b8f5ca;
+}
+
+.feedback-meta {
+  font-size: 11px;
+  color: #9ac8ff;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .preview-grid {
   margin-top: 10px;
   display: grid;

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, FormEvent } from 'react'
 import './App.css'
 
 const BOARD_COLS = 10
@@ -85,6 +85,81 @@ const TETROMINOS: Record<PieceKey, Tetromino> = {
 }
 
 const PIECE_KEYS = Object.keys(TETROMINOS) as PieceKey[]
+
+const AGENTATION_WEBHOOK_URL =
+  import.meta.env.VITE_AGENTATION_WEBHOOK_URL ?? 'https://api.consen.app/webhooks/agentation'
+
+const AGENTATION_METADATA = {
+  task_id: import.meta.env.VITE_AGENTATION_TASK_ID ?? 'tsk_01kp7nmabtfyb93dshv7zwahmx',
+  project_id: import.meta.env.VITE_AGENTATION_PROJECT_ID ?? 'prj_01kp7njnewfm6bbzdaew554ydd',
+  chat_id: import.meta.env.VITE_AGENTATION_CHAT_ID ?? 'chat_01kp7nentvedfr6q52d1p00f1h',
+  workspace_id: import.meta.env.VITE_AGENTATION_WORKSPACE_ID ?? 'ws_01kf0b8vzse7rb8tf8s2r1sgxj',
+}
+
+type AgentationFeedbackProps = {
+  webhookUrl: string
+  metadata: Record<string, string>
+}
+
+function AgentationFeedback({ webhookUrl, metadata }: AgentationFeedbackProps) {
+  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+
+  const submitFeedback = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmed = message.trim()
+    if (!trimmed || status === 'sending') {
+      return
+    }
+
+    setStatus('sending')
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: trimmed,
+          metadata,
+          source: 'tetris-web',
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`request failed: ${response.status}`)
+      }
+
+      setMessage('')
+      setStatus('success')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  return (
+    <div className="glass-card feedback-card">
+      <h2>Agentation 反馈</h2>
+      <p className="feedback-copy">在线收集用户反馈并透传任务上下文。</p>
+      <form onSubmit={submitFeedback} className="feedback-form">
+        <textarea
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          placeholder="输入你的建议、问题或复现步骤..."
+          rows={4}
+        />
+        <button type="submit" disabled={!message.trim() || status === 'sending'}>
+          {status === 'sending' ? '发送中...' : '提交反馈'}
+        </button>
+      </form>
+      <p className="feedback-status">
+        {status === 'success' && '已发送到 Agentation。'}
+        {status === 'error' && '发送失败，请稍后重试。'}
+      </p>
+      <code className="feedback-meta">{JSON.stringify({ webhookUrl, metadata })}</code>
+    </div>
+  )
+}
 
 function getRandomPieceKey(): PieceKey {
   return PIECE_KEYS[Math.floor(Math.random() * PIECE_KEYS.length)]
@@ -457,6 +532,11 @@ function App() {
               <li>Enter：开始新局</li>
             </ul>
           </div>
+
+          <AgentationFeedback
+            webhookUrl={AGENTATION_WEBHOOK_URL}
+            metadata={AGENTATION_METADATA}
+          />
         </aside>
       </section>
     </main>
