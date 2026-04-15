@@ -1,15 +1,31 @@
-已完成 `task-1-bootstrap` 的最高价值进展并通过当前任务验收检查。
+已完成当前任务 `task-2-gameplay-ui` 的高价值实现，并通过本任务验收检查。
 
-变更：
-- 更新 [package.json](/workspace/tetris-game/package.json)
-1. 增加 `start` 脚本：`vite preview --host 0.0.0.0 --port ${PORT:-4173}`（可用于 Railway 静态预览启动）
-2. 增加 `test:e2e` 脚本：`playwright test`
-3. 保留 `dev` / `build`，并将包名改为 `tetris-game`
-4. 增加 `@playwright/test` 开发依赖
-- 生成 [package-lock.json](/workspace/tetris-game/package-lock.json)（执行 `npm install` 后）
+已修改：
+- [App.tsx](/workspace/tetris-game/src/App.tsx)
+- [App.css](/workspace/tetris-game/src/App.css)
+- [index.css](/workspace/tetris-game/src/index.css)
+
+实现内容：
+- 完整俄罗斯方块核心玩法：方块生成、左右移动、旋转、软降、硬降、锁定、消行、结束判定。
+- 计分与成长：`score / lines / level`，随等级提升自动加快下落速度。
+- 完整 UI/交互：
+1. 品牌区与标题文案
+2. 按钮：`开始 / 暂停 / 继续 / 重开`
+3. 状态反馈（等待开始/进行中/已暂停/游戏结束）
+4. 统计卡片（score/level/lines）
+5. `next` 下一个方块预览
+6. 键位操作说明
+7. 响应式布局与视觉样式（玻璃卡片、棋盘格、方块配色）
+
+键盘支持：
+- `← / →` 移动
+- `↑` 或 `X` 旋转
+- `↓` 软降
+- `Space` 硬降
+- `P` 暂停/继续
 
 验证结果：
-- `test -f package.json` ✅
-- `node -e "const p=require('./package.json'); const s=p.scripts||{}; if(!s.dev||!s.build||!s.start||!s['test:e2e']) process.exit(1)"` ✅
-- `test -f src/main.tsx` ✅
-- 额外执行 `npm run build` ✅（构建成功）
+- `npm run build` 通过
+- `test -f src/App.tsx` 通过
+- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src` 通过
+- `grep -RE 'score|level|lines|next' -ni src` 通过
