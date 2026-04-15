@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import type { CSSProperties } from 'react'
 import './App.css'
 
 const BOARD_COLS = 10
@@ -407,7 +408,7 @@ function App() {
                 <span
                   key={`${rowIndex}-${cellIndex}`}
                   className={`cell ${cell ? 'filled' : ''}`}
-                  style={cell ? ({ '--cell-color': cell } as React.CSSProperties) : undefined}
+                  style={cell ? ({ '--cell-color': cell } as CSSProperties) : undefined}
                 />
               )),
             )}
@@ -438,7 +439,7 @@ function App() {
                   <span
                     key={`preview-${rowIndex}-${cellIndex}`}
                     className={`cell preview ${cell ? 'filled' : ''}`}
-                    style={cell ? ({ '--cell-color': cell } as React.CSSProperties) : undefined}
+                    style={cell ? ({ '--cell-color': cell } as CSSProperties) : undefined}
                   />
                 )),
               )}

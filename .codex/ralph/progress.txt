@@ -68,3 +68,30 @@ Codex last message:
 - `test -f src/main.tsx` ✅
 - 额外执行 `npm run build` ✅（构建成功）
 
+Iteration 3
+Task: task-2-gameplay-ui - 实现俄罗斯方块核心玩法、完整 UI 与交互
+Status after iteration: completed
+Verify exit: 0
+Verify log: /workspace/tetris-game/.codex/ralph/verify-3.log
+Codex last message:
+已完成当前任务 `task-2-gameplay-ui` 的高价值实现，并通过本任务验收检查。
+
+已修改：
+- [App.tsx](/workspace/tetris-game/src/App.tsx)
+- [App.css](/workspace/tetris-game/src/App.css)
+- [index.css](/workspace/tetris-game/src/index.css)
+
+实现内容：
+- 完整俄罗斯方块核心玩法：方块生成、左右移动、旋转、软降、硬降、锁定、消行、结束判定。
+- 计分与成长：`score / lines / level`，随等级提升自动加快下落速度。
+- 完整 UI/交互：
+1. 品牌区与标题文案
+2. 按钮：`开始 / 暂停 / 继续 / 重开`
+3. 状态反馈（等待开始/进行中/已暂停/游戏结束）
+4. 统计卡片（score/level/lines）
+5. `next` 下一个方块预览
+6. 键位操作说明
+7. 响应式布局与视觉样式（玻璃卡片、棋盘格、方块配色）
+
+键盘支持：
+

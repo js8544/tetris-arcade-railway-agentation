@@ -2,20 +2,25 @@
   font-family: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #f8fcff;
-  font-synthesis: none;
+  color: #dbe8ff;
+  background:
+    radial-gradient(circle at 12% 18%, #20385f 0%, rgba(32, 56, 95, 0) 34%),
+    radial-gradient(circle at 88% 78%, #12304d 0%, rgba(18, 48, 77, 0) 38%),
+    linear-gradient(140deg, #080f1e 0%, #0d1628 45%, #070c16 100%);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body,
-#root {
-  margin: 0;
-  min-height: 100%;
+* {
+  box-sizing: border-box;
 }
 
 body {
+  margin: 0;
   min-height: 100vh;
+}
+
+a {
+  color: inherit;
 }

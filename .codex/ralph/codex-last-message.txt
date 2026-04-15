@@ -1,31 +1,21 @@
-已完成当前任务 `task-2-gameplay-ui` 的高价值实现，并通过本任务验收检查。
+已完成 `task-2-gameplay-ui` 的核心交付，当前任务验收检查已通过。
 
-已修改：
-- [App.tsx](/workspace/tetris-game/src/App.tsx)
-- [App.css](/workspace/tetris-game/src/App.css)
-- [index.css](/workspace/tetris-game/src/index.css)
+变更文件：
+- [src/App.tsx](/workspace/tetris-game/src/App.tsx)
+- [src/App.css](/workspace/tetris-game/src/App.css)
+- [src/index.css](/workspace/tetris-game/src/index.css)
 
-实现内容：
-- 完整俄罗斯方块核心玩法：方块生成、左右移动、旋转、软降、硬降、锁定、消行、结束判定。
-- 计分与成长：`score / lines / level`，随等级提升自动加快下落速度。
-- 完整 UI/交互：
-1. 品牌区与标题文案
-2. 按钮：`开始 / 暂停 / 继续 / 重开`
-3. 状态反馈（等待开始/进行中/已暂停/游戏结束）
-4. 统计卡片（score/level/lines）
-5. `next` 下一个方块预览
-6. 键位操作说明
-7. 响应式布局与视觉样式（玻璃卡片、棋盘格、方块配色）
+实现内容（`src/App.tsx`）：
+- 完整俄罗斯方块核心玩法：方块生成、移动、旋转（含简单墙踢）、软降、硬降、自动下落、锁定、消行、结束判定。
+- 计分/等级/消行系统：`score`、`level`、`lines`，并随等级提升加快下落速度。
+- 完整键盘交互：`←/→`、`↑/X`、`↓`、`Space`、`P`、`Enter`。
+- 完整 UI 结构：品牌区、状态反馈、`开始/暂停/继续/重开` 按钮、统计卡、`next` 预览、操作说明。
 
-键盘支持：
-- `← / →` 移动
-- `↑` 或 `X` 旋转
-- `↓` 软降
-- `Space` 硬降
-- `P` 暂停/继续
+验收结果：
+- `test -f src/App.tsx` ✅
+- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src >/dev/null` ✅
+- `grep -RE 'score|level|lines|next' -ni src >/dev/null` ✅
+- 额外验证：`npm run build` ✅
 
-验证结果：
-- `npm run build` 通过
-- `test -f src/App.tsx` 通过
-- `grep -RE '开始|暂停|继续|重开' -n src/App.tsx src` 通过
-- `grep -RE 'score|level|lines|next' -ni src` 通过
+说明：
+- 工作区中 `.codex/ralph/*` 的变更仍保留（未回滚）。
