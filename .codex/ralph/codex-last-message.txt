@@ -1,21 +1,18 @@
-已完成当前任务的高价值交付，包含站点内 Agentation 挂载与 README 部署文档补全。
+已完成当前任务 `task-3-agentation-docs` 的实现并通过验收检查。
 
 变更文件：
-- [src/App.tsx](/workspace/tetris-game/src/App.tsx)
-- [README.md](/workspace/tetris-game/README.md)
+- [src/App.tsx](/workspace/tetris-game/src/App.tsx#L89)
+- [src/App.css](/workspace/tetris-game/src/App.css#L159)
+- [README.md](/workspace/tetris-game/README.md#L1)
 
-具体完成：
-- 在 [src/App.tsx](/workspace/tetris-game/src/App.tsx) 中保留并挂载了 `AgentationFeedback` React 组件，`webhookUrl` 默认指向 `https://api.consen.app/webhooks/agentation`。
-- `metadata` 透传了已知 `project_id/task_id/chat_id/workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖（默认值仍为指定 ID）。
-- 将 README 重写为交付文档，补充了：
-  - 本地运行（`npm install` / `npm run dev`）
-  - 生产构建与启动（`npm run build` / `npm run start`）
-  - Railway 部署命令与变量说明
-  - Agentation 配置说明
-  - 验收命令清单与 Playwright 截图产物说明
+关键实现：
+- 在页面内新增 `AgentationFeedback` React 组件并挂载到侧边栏，提交反馈时 `POST` 到 `https://api.consen.app/webhooks/agentation`。
+- 显式透传 metadata：`task_id / project_id / chat_id / workspace_id`，并支持 `VITE_AGENTATION_*` 环境变量覆盖默认值。
+- 新增反馈区样式（输入框、状态文案、元数据展示）。
+- 重写 README：补充运行、构建、E2E、Railway 部署、交付验收命令与当前任务验收命令。
 
-验收与验证结果：
-- `bash .codex/ralph/verify-current-task.sh` ✅（exit 0）
+验证结果：
 - `npm run build` ✅
-
-可继续下一任务 `task-4-verify`（本地预览 + Playwright 截图验证）。
+- `grep -R 'api.consen.app/webhooks/agentation' -n src .` ✅
+- `grep -RE 'tsk_...|prj_...|chat_...|ws_...' -n src .` ✅
+- `test -f README.md` ✅
