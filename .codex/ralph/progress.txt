@@ -196,3 +196,9 @@ Codex last message:
 补充说明：
 - 首次运行 Playwright 时缺少浏览器，已执行 `npx playwright install chromium` 后复跑通过。
 
+
+[2026-04-15] 发布完成
+- GitHub: https://github.com/js8544/tetris-arcade-railway-agentation
+- Railway project: tetris-web-game / service web / deployment ca9cfe69-7f7f-4953-929b-ad6657e72d54
+- Railway URL: https://web-production-fd261.up.railway.app
+- Reachability: curl GET returned HTTP/2 200 with updated title.
